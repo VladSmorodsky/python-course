@@ -7,6 +7,8 @@ def calculate_circle_area(radius):
         return math.pi * circle_radius ** 2
     except ValueError:
         return 'Incorrect radius value.'
+    except:
+        return 'Something went wrong.'
 
 
 radius_value = input('Enter radius value:')
