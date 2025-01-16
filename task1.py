@@ -1,7 +1,16 @@
 import math
 
 
-def calculate_circle_area(radius):
+def calculate_circle_area(radius: int) -> str:
+    """
+    Function calculates a circle's radius
+
+    Parameters:
+        radius (int): circle radius
+
+    Returns:
+        str: circle area value or exception text
+    """
     try:
         circle_radius = int(radius)
         return math.pi * circle_radius ** 2
@@ -11,6 +20,6 @@ def calculate_circle_area(radius):
         return 'Something went wrong.'
 
 
-radius_value = input('Enter radius value:')
+radius_value = int(input('Enter radius value:'))
 
 print(calculate_circle_area(radius_value))
