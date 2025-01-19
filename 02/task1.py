@@ -1,7 +1,7 @@
-def analyse_object(analysed_object: object) -> None:
+def analyze_object(obj: object) -> None:
     """
     Function represents analysed object's info
-    :param analysed_object:
+    :param obj:
     :return:
     """
 
@@ -21,9 +21,9 @@ def analyse_object(analysed_object: object) -> None:
 
         return object_members_info
 
-    print(f"Object type: {type(analysed_object)}\n"
+    print(f"Object type: {type(obj)}\n"
           f"Attributes and methods:\n"
-          f"{get_object_members(analysed_object)}")
+          f"{get_object_members(obj)}")
 
 
 class MyClass:
@@ -35,4 +35,4 @@ class MyClass:
 
 
 my_class = MyClass('test')
-analyse_object(my_class)
+analyze_object(my_class)
