@@ -4,7 +4,7 @@ class DynamicProperties:
         Also, it is responsible for creating property name getter and setter"""
 
         def get_property(prop_name: str):
-            return self.__dict__[name]
+            return self.__dict__[prop_name]
 
         def set_property(prop_name: str, value) -> None:
             self.__dict__[prop_name] = value
