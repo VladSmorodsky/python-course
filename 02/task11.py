@@ -7,9 +7,9 @@ class LimitedAttributesMeta(type):
         for attr in cls.__dict__.keys():
             if attr_count > cls.__max_attributes_count:
                 # Raise Exception if class attributes count more than acceptable
-                raise Exception(f'More than {cls.__max_attributes_count} attributes provided')
+                raise Exception(f"Class {cls.__name__} can't has more than {cls.__max_attributes_count} attributes")
             if attr.startswith('__') or callable(attr):
-                # Filter functions
+                # Skip functions
                 continue
             attr_count += 1
 
