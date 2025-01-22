@@ -56,7 +56,8 @@ class Fraction:
         """
         return Fraction(self.numerator * fraction_object.denominator, self.denominator * fraction_object.numerator)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Returns Fraction representation"""
         return f"{self.numerator}/{self.denominator}"
 
 
