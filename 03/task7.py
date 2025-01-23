@@ -4,7 +4,7 @@ import math
 class Vector:
     """Class Vector represents vector in n* dimension"""
 
-    def __init__(self, *dimension: int):
+    def __init__(self, *dimension: int) -> None:
         self.dimension = dimension
 
     def __add__(self, vector: 'Vector') -> 'Vector':

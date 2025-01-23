@@ -2,7 +2,9 @@ import re
 
 
 class User:
-    def __init__(self, first_name: str, last_name: str, email: str):
+    """Class represents user with first name, last name and email"""
+
+    def __init__(self, first_name: str, last_name: str, email: str) -> None:
         self.__validate_not_empty_value(first_name)
         self.__validate_not_empty_value(last_name)
         self.__validate_not_empty_value(email)

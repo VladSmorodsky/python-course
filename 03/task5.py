@@ -7,7 +7,7 @@ from task2 import Vector
 class VectorList:
     """Class represents a list of vectors and base operations on them."""
 
-    def __init__(self, vector_list: List[Vector]):
+    def __init__(self, vector_list: List[Vector]) -> None:
         self.vector_list = vector_list
         self.index = 0
 
