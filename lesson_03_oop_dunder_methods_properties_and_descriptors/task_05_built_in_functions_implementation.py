@@ -1,7 +1,7 @@
 import unittest
 from typing import List
 
-from O2_vector_numeric_like import Vector
+from task_02_vector_numeric_like import Vector
 
 
 class VectorList:
