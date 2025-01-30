@@ -1,5 +1,5 @@
-from bank_account import BankAccount
-from insufficient_funds_exception import InsufficientFundsException
+from model.bank_account import BankAccount
+from exception.insufficient_funds_exception import InsufficientFundsException
 
 
 class ExchangeService:

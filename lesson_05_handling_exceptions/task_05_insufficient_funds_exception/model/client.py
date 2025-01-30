@@ -1,5 +1,5 @@
-from bank_account import BankAccount
-from exchange_service import ExchangeService
+from model.bank_account import BankAccount
+from service.exchange_service import ExchangeService
 
 
 class Client:

@@ -1,6 +1,6 @@
-from insufficient_funds_exception import InsufficientFundsException
-from bank_account import BankAccount
-from client import Client
+from exception.insufficient_funds_exception import InsufficientFundsException
+from model.bank_account import BankAccount
+from model.client import Client
 
 try:
     # Add client and bank accounts
