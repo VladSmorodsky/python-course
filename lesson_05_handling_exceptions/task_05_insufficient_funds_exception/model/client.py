@@ -6,11 +6,12 @@ class Client:
     """
     Represents bank client
     """
-    __bank_accounts: dict[str, BankAccount]
+    __bank_accounts: (dict[str, BankAccount])
 
     def __init__(self, name: str):
         self.__name = name
         self.__exchange_service = ExchangeService()
+        self.__bank_accounts = {}
 
     def get_bank_account(self, bank_account_id: str) -> BankAccount:
         """
@@ -22,13 +23,13 @@ class Client:
             raise Exception('Bank account not found.')
         return self.__bank_accounts[bank_account_id]
 
-    def set_bank_account(self, bank_account: BankAccount) -> None:
+    def add_bank_account(self, bank_account: BankAccount) -> None:
         """
         Set new bank account
         :param bank_account:
         :return:
         """
-        if bank_account.bank_account_id in self.__bank_accounts:
+        if self.__bank_accounts and bank_account.bank_account_id in self.__bank_accounts:
             raise Exception(f"Bank account is already exist.")
         self.__bank_accounts[bank_account.bank_account_id] = bank_account
 
