@@ -1,13 +1,13 @@
 from json_manager import JsonManager
 
-# # Read JSON file
-# for row in JsonManager.read_file('books.json'):
-#     print(row)
-#
-# # Get available books
-# print('Available books:')
-# for available_book in JsonManager.get_available_book_list('books.json'):
-#     print(available_book)
+# Read JSON file
+for row in JsonManager.read_file('books.json'):
+    print(row)
+
+# Get available books
+print('Available books:')
+for available_book in JsonManager.get_available_book_list('books.json'):
+    print(available_book)
 
 # Add book
 try:
