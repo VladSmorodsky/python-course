@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Книга 1",
+        "author": "Автор 1",
+        "year": 2015,
+        "isAvailable": true
+    },
+    {
+        "name": "Книга 2",
+        "author": "Автор 2",
+        "year": 2018,
+        "isAvailable": false
+    },
+    {
+        "name": "Burning Daylight",
+        "author": "Jack London",
+        "year": "1910",
+        "isAvailable": true
+    }
+]
