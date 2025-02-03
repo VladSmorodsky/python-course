@@ -1,0 +1,10 @@
+<root>
+    <book>
+        <name>Burning Daylight</name>
+        <author>Jack London</author>
+    </book>
+    <book>
+        <name>The Count of Monte Cristo</name>
+        <author>Alexandre Dumas</author>
+    </book>
+</root>

@@ -1,0 +1,4 @@
+[project]
+name = "file_manager_adapter"
+version = "0.1.0"
+description = "File manager Adapter"

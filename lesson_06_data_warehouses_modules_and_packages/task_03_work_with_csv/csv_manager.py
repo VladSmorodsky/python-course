@@ -75,7 +75,7 @@ class CsvManager:
     @classmethod
     def __validate_file_extension(cls, file_path: str) -> None:
         """
-        Validate if file has
+        Validate if file has an allowed format
         :param file_path:
         :return:
         """

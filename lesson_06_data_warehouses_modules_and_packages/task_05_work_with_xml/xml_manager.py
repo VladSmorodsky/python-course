@@ -15,14 +15,14 @@ class XMLManager:
     @classmethod
     def read_file(cls, xml_file_path: str) -> Generator[list[str], Any, None]:
         """
-        Read JSON file
+        Read XML file
         :param xml_file_path:
         :return:
         :raise (FileExtensionError, FileNotFoundError)
         """
         try:
             cls.__validate_file_extension(xml_file_path)
-            tree = ET.parse('products.xml')
+            tree = ET.parse(xml_file_path)
             root = tree.getroot()
             for product in root.findall('product'):
                 yield {product.find('name').text: int(product.find('quantity').text)}
