@@ -1,0 +1,8 @@
+[project]
+name = "notification_adapters"
+version = "0.1.0"
+description = "Implemented notification adapters with notification strategy"
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["adapters", "services", "strategies", "exceptions"]  # ["*"] by default
