@@ -12,6 +12,7 @@ class StringProcessorTest(TestCase):
     """
     Cover StringProcessor class
     """
+
     @unittest.skip
     def test_reversed_string_method_with_empty_string(self):
         self.assertEqual('', StringProcessor.reversed_string(''))
