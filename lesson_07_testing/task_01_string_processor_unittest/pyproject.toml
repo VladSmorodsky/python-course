@@ -1,0 +1,8 @@
+[project]
+name = "unit_tests"
+version = "0.1.0"
+description = "Implemented unit tests"
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["src", "tests"]  # ["*"] by default
