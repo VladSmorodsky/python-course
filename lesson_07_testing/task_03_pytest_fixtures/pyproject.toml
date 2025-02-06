@@ -1,0 +1,8 @@
+[project]
+name = "unit_tests_pytest_fixtures"
+version = "0.1.0"
+description = "Use pytest fixtures in tests"
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["src", "tests"]  # ["*"] by default
