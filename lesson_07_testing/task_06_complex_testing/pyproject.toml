@@ -1,0 +1,8 @@
+[project]
+name = "complex_testing"
+version = "0.1.0"
+description = "Use fixtures, parametrize data, mocks to cover bank account class"
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["src", "tests", "exceptions"]  # ["*"] by default
