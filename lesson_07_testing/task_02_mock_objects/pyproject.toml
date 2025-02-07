@@ -1,0 +1,8 @@
+[project]
+name = "unit_tests_mock_requests"
+version = "0.1.0"
+description = "IMock requests in the unit test"
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["src", "tests"]  # ["*"] by default
