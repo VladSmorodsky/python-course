@@ -1,0 +1,8 @@
+[project]
+name = "testing_with_temp_file_fixture"
+version = "0.1.0"
+description = "Use temporary file fixture for testing"
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["src", "tests"]  # ["*"] by default
