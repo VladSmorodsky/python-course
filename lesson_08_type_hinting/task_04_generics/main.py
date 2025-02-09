@@ -1,9 +1,9 @@
-from typing import List, TypeVar
+from typing import List, TypeVar, Union
 
-T = TypeVar
+T = TypeVar('T')
 
 
-def get_first(items: List[T]) -> T:
+def get_first(items: List[T]) -> Union[T, None]:
     """
     Returns the first item from the list
     :param items:
