@@ -1,0 +1,8 @@
+[project]
+name = "final_abstract_and_metaclasses"
+version = "0.1.0"
+description = "Implemented SQL repository class with representing INSERT query. Use env variables to define database configuration inside BaseRepository class."
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["src"]  # ["*"] by default
