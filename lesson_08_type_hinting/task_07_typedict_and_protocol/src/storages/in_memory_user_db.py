@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from src.databases.user_database import UserDatabase
-from src.models.user import User
+from lesson_08_type_hinting.task_07_typedict_and_protocol.src.databases.user_database import UserDatabase
+from lesson_08_type_hinting.task_07_typedict_and_protocol.src.models.user import User
 
 
 class InMemoryUserDB(UserDatabase):

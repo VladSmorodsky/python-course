@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from typing import Dict, Any
 from dotenv import load_dotenv
 
-from config import Config
+from lesson_08_type_hinting.task_09_final_and_metaclasses.config import Config
 
 load_dotenv()
 
@@ -13,8 +13,8 @@ class BaseRepository(ABC):
     Represents template for other repositories
     """
     __config: Config = {
-        'database_name': os.getenv('DATABASE_NAME') if os.getenv('DATABASE_NAME') else 'db',
-        'product_table_name': os.getenv('PRODUCT_TABLE_NAME') if os.getenv('PRODUCT_TABLE_NAME') else 'products'
+        'database_name': os.getenv('DATABASE_NAME', 'db'),
+        'product_table_name': os.getenv('PRODUCT_TABLE_NAME', 'products')
     }
 
     @property

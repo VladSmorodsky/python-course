@@ -1,7 +1,6 @@
-import os
 from typing import Dict, Any
 
-from src.repositories.base_repository import BaseRepository
+from lesson_08_type_hinting.task_09_final_and_metaclasses.src.repositories.base_repository import BaseRepository
 
 
 class SQLRepository(BaseRepository):

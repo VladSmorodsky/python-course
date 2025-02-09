@@ -1,4 +1,4 @@
-from processor import Processor
+from lesson_08_type_hinting.task_08_callable_and_generics.processor import Processor
 
 
 def double(item: int) -> int:
