@@ -1,0 +1,8 @@
+[project]
+name = "typedict_and_protocol"
+version = "0.1.0"
+description = "Use Typedict and Protocol types"
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["src"]  # ["*"] by default
