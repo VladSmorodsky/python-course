@@ -11,4 +11,4 @@ def remove_html_tags(text: str) -> str:
 
 
 if __name__ == '__main__':
-    print(remove_html_tags('<html><head>fdfdsfa</head>fdsfadsf<body>fdsfdsaf</body>fsdfads'))
+    print(remove_html_tags('<html><head>Test message</head><body><p>Paragraph 1</p><p>Paragraph 2</p></body>'))
