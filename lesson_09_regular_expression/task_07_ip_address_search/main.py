@@ -7,7 +7,7 @@ def search_ip_address(text: str) -> list[str]:
     :param text:
     :return:
     """
-    pattern = r"\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}"
+    pattern = r"(?:\d{1,3}\.){3}\d{1,3}"
     valid_ip_addresses = []
     ip_address_list = re.findall(pattern, text)
     for ip_address in ip_address_list:
@@ -23,4 +23,4 @@ def search_ip_address(text: str) -> list[str]:
 
 
 if __name__ == '__main__':
-    print(search_ip_address('Rere fdf 172.16.31.10 fdsfad 172.777.31.10'))  # ['172.16.31.10]
+    print(search_ip_address('Test Ip address 172.16.31.10 and other wrong: 172.777.31.10'))  # ['172.16.31.10]
