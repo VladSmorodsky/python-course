@@ -1,7 +1,7 @@
 import inspect
 
 
-def get_functions_info(function_name, function_object) -> str:
+def get_functions_info(function_name: str, function_object: callable) -> str:
     """
     Function returns into about function object
     :param function_name:
@@ -19,7 +19,7 @@ def get_functions_info(function_name, function_object) -> str:
     return f"{function_name}({function_arguments_info})\n"
 
 
-def analyze_module(module_name) -> None:
+def analyze_module(module_name: str) -> None:
     """
     Function shows functions and classes in the module
     :param module_name:

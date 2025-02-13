@@ -1,5 +1,5 @@
 class DynamicProperties:
-    def add_property(self, name: str, default_value):
+    def add_property(self, name: str, default_value: str) -> None:
         """Function creates property with name and default_value value.
         Also, it is responsible for creating property name getter and setter"""
 

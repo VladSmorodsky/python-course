@@ -2,7 +2,7 @@ class SingletonMeta(type):
     """Class is responsible for creating and storing single class instances."""
     __instances = {}
 
-    def __call__(cls, *args, **kwargs):
+    def __call__(cls, *args, **kwargs) -> object:
         """Function is responsible for creating single cls instance and returning it when it exists."""
         if cls not in cls.__instances:
             new_instance = super().__call__(*args, **kwargs)
@@ -11,7 +11,10 @@ class SingletonMeta(type):
 
 
 class Singleton(metaclass=SingletonMeta):
-    def __init__(self):
+    def __init__(self) -> None:
+        """
+        Print creating instance
+        """
         print("Creating instance")
 
 

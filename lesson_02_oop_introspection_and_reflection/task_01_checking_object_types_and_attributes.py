@@ -27,10 +27,10 @@ def analyze_object(obj: object) -> None:
 
 
 class MyClass:
-    def __init__(self, value):
+    def __init__(self, value: str) -> None:
         self.value = value
 
-    def say_hello(self):
+    def say_hello(self) -> str:
         return f"Hello, {self.value}"
 
 

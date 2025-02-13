@@ -1,4 +1,4 @@
-def create_class(class_name: str, method_list):
+def create_class(class_name: str, method_list: dict[str, callable]) -> type:
     """
     Function for creating dynamic class using class_name string and method_list methods
     :param class_name:
@@ -8,11 +8,21 @@ def create_class(class_name: str, method_list):
     return type(class_name, (), method_list)
 
 
-def say_hello(self):
+def say_hello(self) -> str:
+    """
+    Function for say hello
+    :param self:
+    :return:
+    """
     return "Hello!"
 
 
-def say_goodbye(self):
+def say_goodbye(self) -> str:
+    """
+    Function for say goodbye
+    :param self:
+    :return:
+    """
     return "Goodbye!"
 
 

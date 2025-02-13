@@ -1,5 +1,8 @@
+from typing import Any
+
+
 class MutableClass:
-    def add_attribute(self, name: str, value) -> None:
+    def add_attribute(self, name: str, value: Any) -> None:
         """Set new attribute"""
         setattr(self, name, value)
 
