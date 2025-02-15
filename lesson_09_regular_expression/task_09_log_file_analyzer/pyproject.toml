@@ -1,0 +1,4 @@
+[project]
+name = "log_file_analyzer"
+version = "0.1.0"
+description = "Retrieve all IP addresses from log file and get statistics with request's count on IPs."
