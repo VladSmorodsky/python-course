@@ -1,4 +1,4 @@
-def log_methods(class_name):
+def log_methods(class_name: str) -> str:
     """Decorator function that adds logging info for class's methods execution
 
     :param class_name: class name for decorating
@@ -20,10 +20,22 @@ def log_methods(class_name):
 
 @log_methods
 class MyClass:
-    def add(self, a, b):
+    def add(self, a: int, b: int) -> int:
+        """
+        Sum of two numbers
+        :param a:
+        :param b:
+        :return:
+        """
         return a + b
 
-    def subtract(self, a, b):
+    def subtract(self, a: int, b: int) -> int:
+        """
+        Subtraction of two numbers
+        :param a:
+        :param b:
+        :return:
+        """
         return a - b
 
 

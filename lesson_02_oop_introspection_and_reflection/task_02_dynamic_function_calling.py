@@ -1,4 +1,4 @@
-def call_function(obj, method_name: str, *args) -> str:
+def call_function(obj: object, method_name: str, *args) -> str:
     """
     Function calls automatically object's (obj) method (method_name) with arguments (args)
     :param obj:
@@ -20,10 +20,22 @@ def call_function(obj, method_name: str, *args) -> str:
 class Calculator:
     c = 1
 
-    def add(self, a, b):
+    def add(self, a: int, b: int) -> int:
+        """
+        Sum of two numbers
+        :param a:
+        :param b:
+        :return:
+        """
         return a + b
 
-    def subtract(self, a, b):
+    def subtract(self, a: int, b: int) -> int:
+        """
+        Subtracts b from a
+        :param a:
+        :param b:
+        :return:
+        """
         return a - b
 
 

@@ -2,7 +2,13 @@ class LimitedAttributesMeta(type):
     """Class is responsible for checking max class attribute's count."""
     __max_attributes_count = 3
 
-    def __call__(cls, *args, **kwargs):
+    def __call__(cls, *args, **kwargs) -> None:
+        """
+        Check class attribute's count.
+        :param args:
+        :param kwargs:
+        :return:
+        """
         attr_count = 0
         for attr in cls.__dict__.keys():
             if attr_count > cls.__max_attributes_count:

@@ -1,4 +1,4 @@
-def analyze_inheritance(class_name):
+def analyze_inheritance(class_name: type) -> None:
     """Function represents parent class methods
     :param class_name: Analyzed class
     """
