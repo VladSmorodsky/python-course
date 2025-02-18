@@ -19,7 +19,7 @@ class ActorRepository:
         :param year:
         :return:
         """
-        self.__cursor.execute("""INSERT INTO actors (name, birth_year) VALUES (?, ?)""",
+        self.__cursor.execute("""INSERT OR IGNORE INTO actors (name, birth_year) VALUES (?, ?)""",
                               (name, year))
         self.__connection.commit()
 

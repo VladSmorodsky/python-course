@@ -29,7 +29,7 @@ class MovieRepository:
         :param genre:
         :return:
         """
-        self.__cursor.execute("""INSERT INTO movies (title, release_year, genre) VALUES (?, ?, ?)""",
+        self.__cursor.execute("""INSERT OR IGNORE INTO movies (title, release_year, genre) VALUES (?, ?, ?)""",
                               (movie_title, year, genre))
         self.__connection.commit()
 

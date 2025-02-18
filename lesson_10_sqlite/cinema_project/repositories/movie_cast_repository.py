@@ -18,7 +18,7 @@ class MovieCastRepository:
         :param movie_cast_list:
         :return:
         """
-        self.__cursor.executemany("""INSERT INTO movie_cast (movie_id, actor_id) VALUES (?, ?)""", movie_cast_list)
+        self.__cursor.executemany("""INSERT OR IGNORE INTO movie_cast (movie_id, actor_id) VALUES (?, ?)""", movie_cast_list)
         self.__connection.commit()
 
     def get_movies_with_actors(self) -> List[Tuple[str, str]]:
