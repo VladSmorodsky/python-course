@@ -22,15 +22,18 @@ class ActorRepository:
         self.__cursor.execute("""INSERT OR IGNORE INTO actors (name, birth_year) VALUES (?, ?)""",
                               (name, year))
         self.__connection.commit()
+        self.__connection.close()
 
-    def find_by_id(self, actor_id: int) -> Any:
+    def find_by_id(self, actor_id: int) -> tuple:
         """
         Retrieves an actor by id.
         :param actor_id:
         :return:
         """
         self.__cursor.execute("""SELECT * FROM actors WHERE id = ?""", (actor_id,))
-        return self.__cursor.fetchone()
+        actor = self.__cursor.fetchone()
+        self.__connection.close()
+        return actor
 
     def find_by_name(self, actor_name: str) -> Any:
         """
@@ -39,17 +42,21 @@ class ActorRepository:
         :return:
         """
         self.__cursor.execute("""SELECT * FROM actors WHERE name = ?""", actor_name)
-        return self.__cursor.fetchone()
+        actor = self.__cursor.fetchone()
+        self.__connection.close()
+        return actor
 
-    def find_all(self) -> list[Any]:
+    def find_all(self) -> list[tuple]:
         """
         Retrieves all actors.
         :return:
         """
         self.__cursor.execute("""SELECT * FROM actors""")
-        return self.__cursor.fetchall()
+        actors = self.__cursor.fetchall()
+        self.__connection.close()
+        return actors
 
-    def find_all_in_list(self, actor_ids: Tuple[int, ...]) -> list[Any]:
+    def find_all_in_list(self, actor_ids: Tuple[int, ...]) -> list[tuple]:
         """
         Retrieves all actors.
         :return:
@@ -57,4 +64,6 @@ class ActorRepository:
         placeholders = ', '.join('?' for _ in actor_ids)
         query = f'SELECT * FROM actors WHERE id IN ({placeholders})'
         self.__cursor.execute(query, actor_ids)
-        return self.__cursor.fetchall()
+        actors = self.__cursor.fetchall()
+        self.__connection.close()
+        return actors

@@ -18,8 +18,10 @@ class MovieCastRepository:
         :param movie_cast_list:
         :return:
         """
-        self.__cursor.executemany("""INSERT OR IGNORE INTO movie_cast (movie_id, actor_id) VALUES (?, ?)""", movie_cast_list)
+        self.__cursor.executemany("""INSERT OR IGNORE INTO movie_cast (movie_id, actor_id) VALUES (?, ?)""",
+                                  movie_cast_list)
         self.__connection.commit()
+        self.__connection.close()
 
     def get_movies_with_actors(self) -> List[Tuple[str, str]]:
         """
@@ -31,7 +33,9 @@ class MovieCastRepository:
             INNER JOIN movie_cast AS mc ON m.id = mc.movie_id
             INNER JOIN actors as a ON mc.actor_id = a.id 
         """)
-        return self.__cursor.fetchall()
+        movies_with_actors = self.__cursor.fetchall()
+        self.__connection.close()
+        return movies_with_actors
 
     def get_average_birth_year_for_actors_in_movie_genre(self, movie_genre: str) -> float:
         """
@@ -45,7 +49,9 @@ class MovieCastRepository:
             INNER JOIN movies ON movies.id = movie_cast.movie_id
             WHERE movies.genre = ?
         """, (movie_genre,))
-        return self.__cursor.fetchone()[0]
+        avg_birth_year = self.__cursor.fetchone()[0]
+        self.__connection.close()
+        return avg_birth_year
 
     def get_movies_and_actors_names(self) -> List[Tuple[str]]:
         """
@@ -57,4 +63,6 @@ class MovieCastRepository:
             UNION 
             SELECT name FROM actors
         """)
-        return self.__cursor.fetchall()
+        names = self.__cursor.fetchall()
+        self.__connection.close()
+        return names

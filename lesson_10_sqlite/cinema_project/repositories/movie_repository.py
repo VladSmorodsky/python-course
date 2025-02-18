@@ -32,23 +32,28 @@ class MovieRepository:
         self.__cursor.execute("""INSERT OR IGNORE INTO movies (title, release_year, genre) VALUES (?, ?, ?)""",
                               (movie_title, year, genre))
         self.__connection.commit()
+        self.__connection.close()
 
-    def find_all(self) -> list:
+    def find_all(self) -> list[tuple]:
         """
         Retrieves all movies from the database.
         :return:
         """
         self.__cursor.execute("""SELECT * FROM movies""")
-        return self.__cursor.fetchall()
+        movies = self.__cursor.fetchall()
+        self.__connection.close()
+        return movies
 
-    def find_by_id(self, movie_id: int) -> dict:
+    def find_by_id(self, movie_id: int) -> tuple:
         """
         Retrieves a movie by id.
         :param movie_id:
         :return:
         """
         self.__cursor.execute("""SELECT * FROM movies WHERE id = ?""", (movie_id,))
-        return self.__cursor.fetchone()
+        movie_id = self.__cursor.fetchone()
+        self.__connection.close()
+        return movie_id
 
     def find_one_by_title(self, movie_title: str) -> list:
         """
@@ -57,7 +62,9 @@ class MovieRepository:
         :return:
         """
         self.__cursor.execute("""SELECT * FROM movies WHERE title = ?""", (movie_title,))
-        return self.__cursor.fetchone()
+        movies = self.__cursor.fetchone()
+        self.__connection.close()
+        return movies
 
     def find_by_title(self, movie_title: str) -> List[Tuple[str, int]]:
         """
@@ -67,7 +74,9 @@ class MovieRepository:
         """
         self.__cursor.execute("""SELECT title, release_year FROM movies WHERE LOWER(title) LIKE ?""",
                               (f"%{movie_title.lower()}%",))
-        return self.__cursor.fetchall()
+        movies = self.__cursor.fetchall()
+        self.__connection.close()
+        return movies
 
     def find_all_genres(self) -> List[Tuple[str]]:
         """
@@ -75,7 +84,9 @@ class MovieRepository:
         :return:
         """
         self.__cursor.execute("""SELECT DISTINCT genre FROM movies WHERE genre IS NOT NULL """)
-        return self.__cursor.fetchall()
+        movies = self.__cursor.fetchall()
+        self.__connection.close()
+        return movies
 
     def get_movie_count_by_genres(self) -> List[Tuple[str, int]]:
         """
@@ -84,7 +95,9 @@ class MovieRepository:
         """
         self.__cursor.execute(
             """SELECT genre, COUNT(genre) as movie_count FROM movies WHERE genre IS NOT NULL GROUP BY genre ORDER BY movie_count DESC""")
-        return self.__cursor.fetchall()
+        movies = self.__cursor.fetchall()
+        self.__connection.close()
+        return movies
 
     def get_movies_count(self) -> int:
         """
@@ -92,7 +105,9 @@ class MovieRepository:
         :return:
         """
         self.__cursor.execute("""SELECT COUNT(*) FROM movies""")
-        return self.__cursor.fetchone()[0]
+        movies_count = self.__cursor.fetchone()[0]
+        self.__connection.close()
+        return movies_count
 
     def get_movies_by_page(self, page: int = 1) -> List[Tuple[str, int]]:
         """
@@ -102,4 +117,6 @@ class MovieRepository:
         """
         self.__cursor.execute("""SELECT title, release_year FROM movies LIMIT ? OFFSET ?""",
                               (self.__movies_count_by_page, self.__movies_count_by_page * (page - 1)))
-        return self.__cursor.fetchall()
+        movies = self.__cursor.fetchall()
+        self.__connection.close()
+        return movies

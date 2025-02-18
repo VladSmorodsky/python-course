@@ -23,6 +23,7 @@ class Database:
         Create database with particular tables (movies, actors, movie_cast)
         :return:
         """
+        self.connection.execute('PRAGMA foreign_keys = ON;')
         cursor = self.connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS movies (
