@@ -5,4 +5,4 @@ description = "Create cinema console app about films and cast."
 
 [tool.setuptools.packages.find]
 # All the following settings are optional:
-include = ["src"]  # ["*"] by default
+include = ["cinema_project"]  # ["*"] by default

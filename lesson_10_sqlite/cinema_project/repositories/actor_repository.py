@@ -6,7 +6,7 @@ class ActorRepository:
     """
     Responsible for manipulating actors information from database
     """
-    __connection: Connection = None
+    __connection: Connection
 
     def __init__(self, connection: Connection) -> None:
         self.__connection = connection

@@ -1,6 +1,6 @@
 import re
 
-from ..exceptions.template_mismatch_error import TemplateMismatchError
+from cinema_project.exceptions.template_mismatch_error import TemplateMismatchError
 
 
 class Validation:

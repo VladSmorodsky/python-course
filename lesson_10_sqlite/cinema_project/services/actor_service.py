@@ -1,7 +1,7 @@
-from typing import Any, Tuple, List
+from typing import Any, Tuple
 
-from ..repositories.actor_repository import ActorRepository
-from ..exceptions.not_found_error import NotFoundError
+from cinema_project.exceptions.not_found_error import NotFoundError
+from cinema_project.repositories.actor_repository import ActorRepository
 
 
 class ActorService:

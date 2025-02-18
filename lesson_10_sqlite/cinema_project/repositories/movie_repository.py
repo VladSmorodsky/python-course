@@ -6,7 +6,16 @@ class MovieRepository:
     """
     Responsible for manipulating movie information from database
     """
-    __connection: Connection = None
+    __connection: Connection
+    __movies_count_by_page: int = 2  # set default page size
+
+    @property
+    def movie_count_by_page(self) -> int:
+        """
+        Returns movies count by page value.
+        :return:
+        """
+        return self.__movies_count_by_page
 
     def __init__(self, connection: Connection) -> None:
         self.__connection = connection
@@ -20,7 +29,6 @@ class MovieRepository:
         :param genre:
         :return:
         """
-        print(movie_title)
         self.__cursor.execute("""INSERT INTO movies (title, release_year, genre) VALUES (?, ?, ?)""",
                               (movie_title, year, genre))
         self.__connection.commit()
@@ -51,13 +59,14 @@ class MovieRepository:
         self.__cursor.execute("""SELECT * FROM movies WHERE title = ?""", (movie_title,))
         return self.__cursor.fetchone()
 
-    def find_by_title(self, movie_title: str) -> list:
+    def find_by_title(self, movie_title: str) -> List[Tuple[str, int]]:
         """
-        Retrieves a movie by title.
+        Retrieve movies by title matching.
         :param movie_title:
         :return:
         """
-        self.__cursor.execute("""SELECT * FROM movies WHERE id LIKE %?%""", (movie_title,))
+        self.__cursor.execute("""SELECT title, release_year FROM movies WHERE LOWER(title) LIKE ?""",
+                              (f"%{movie_title.lower()}%",))
         return self.__cursor.fetchall()
 
     def find_all_genres(self) -> List[Tuple[str]]:
@@ -73,5 +82,24 @@ class MovieRepository:
         Retrieves movies count by genre from the database.
         :return:
         """
-        self.__cursor.execute("""SELECT genre, COUNT(genre) as movie_count FROM movies WHERE genre IS NOT NULL GROUP BY genre ORDER BY movie_count DESC""")
+        self.__cursor.execute(
+            """SELECT genre, COUNT(genre) as movie_count FROM movies WHERE genre IS NOT NULL GROUP BY genre ORDER BY movie_count DESC""")
+        return self.__cursor.fetchall()
+
+    def get_movies_count(self) -> int:
+        """
+        Retrieves movies count from the database.
+        :return:
+        """
+        self.__cursor.execute("""SELECT COUNT(*) FROM movies""")
+        return self.__cursor.fetchone()[0]
+
+    def get_movies_by_page(self, page: int = 1) -> List[Tuple[str, int]]:
+        """
+        Retrieves movies paginated result from the database.
+        :param page:
+        :return:
+        """
+        self.__cursor.execute("""SELECT title, release_year FROM movies LIMIT ? OFFSET ?""",
+                              (self.__movies_count_by_page, self.__movies_count_by_page * (page - 1)))
         return self.__cursor.fetchall()

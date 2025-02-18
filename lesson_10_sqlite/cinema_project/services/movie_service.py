@@ -1,9 +1,10 @@
+from math import ceil
 from typing import List, Tuple
 
-from ..repositories.movie_repository import MovieRepository
-from ..validators.validation import Validation
+from cinema_project.repositories.movie_repository import MovieRepository
+from cinema_project.validators.validation import Validation
 
-from ..exceptions.not_found_error import NotFoundError
+from cinema_project.exceptions.not_found_error import NotFoundError
 
 
 class MovieService:
@@ -54,7 +55,10 @@ class MovieService:
         :param movie_title:
         :return:
         """
-        return self.__movie_repository.find_one_by_title(movie_title)
+        movie = self.__movie_repository.find_one_by_title(movie_title)
+        if movie is None:
+            raise NotFoundError(f"Movie with title or key {movie_title} not found.")
+        return movie
 
     def get_movie_genre(self) -> List[str]:
         """
@@ -69,3 +73,26 @@ class MovieService:
         :return:
         """
         return self.__movie_repository.get_movie_count_by_genres()
+
+    def search_movies_by_title(self, movie_title: str) -> List[Tuple[str, int]]:
+        """
+        Get movies by title.
+        :param movie_title:
+        :return List[Tuple[str, int]]:
+        """
+        return self.__movie_repository.find_by_title(movie_title)
+
+    def get_total_movies_page(self) -> int:
+        """
+        Get movies count.
+        :return:
+        """
+        return int(ceil(self.__movie_repository.get_movies_count() / self.__movie_repository.movie_count_by_page))
+
+    def get_paginated_movies(self, page: int = 1) -> List[Tuple[str, int]]:
+        """
+        Get paginated movies.
+        :param page:
+        :return:
+        """
+        return self.__movie_repository.get_movies_by_page(page)

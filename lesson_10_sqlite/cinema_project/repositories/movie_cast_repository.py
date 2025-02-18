@@ -6,7 +6,7 @@ class MovieCastRepository:
     """
     Responsible for manipulating movie cast information from database
     """
-    __connection: Connection = None
+    __connection: Connection
 
     def __init__(self, connection: Connection) -> None:
         self.__connection = connection
@@ -30,5 +30,31 @@ class MovieCastRepository:
             SELECT m.title, a.name FROM movies AS m 
             INNER JOIN movie_cast AS mc ON m.id = mc.movie_id
             INNER JOIN actors as a ON mc.actor_id = a.id 
+        """)
+        return self.__cursor.fetchall()
+
+    def get_average_birth_year_for_actors_in_movie_genre(self, movie_genre: str) -> float:
+        """
+        Get average actors' birth year for movie genre
+        :param movie_genre:
+        :return:
+        """
+        self.__cursor.execute("""
+            SELECT AVG(birth_year) FROM actors
+            INNER JOIN movie_cast ON movie_cast.actor_id = actors.id    
+            INNER JOIN movies ON movies.id = movie_cast.movie_id
+            WHERE movies.genre = ?
+        """, (movie_genre,))
+        return self.__cursor.fetchone()[0]
+
+    def get_movies_and_actors_names(self) -> List[Tuple[str]]:
+        """
+        Get movies' and actors' names
+        :return:
+        """
+        self.__cursor.execute("""
+            SELECT title FROM movies
+            UNION 
+            SELECT name FROM actors
         """)
         return self.__cursor.fetchall()

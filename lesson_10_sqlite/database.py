@@ -5,7 +5,7 @@ class Database:
     """
     Class responsible for creating database and give connection
     """
-    __connection: sqlite3.Connection = None
+    __connection: sqlite3.Connection
 
     def __init__(self, db_file: str) -> None:
         self.__connection = sqlite3.connect(db_file)
