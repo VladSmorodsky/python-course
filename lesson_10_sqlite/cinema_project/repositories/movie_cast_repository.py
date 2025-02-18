@@ -1,5 +1,5 @@
 from sqlite3 import Connection
-from typing import Tuple, List, Any
+from typing import Tuple, List
 
 
 class MovieCastRepository:
