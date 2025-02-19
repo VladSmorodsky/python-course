@@ -1,0 +1,8 @@
+[project]
+name = "cinema_project"
+version = "0.1.0"
+description = "Create cinema console app about films and cast."
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["cinema_project"]  # ["*"] by default
