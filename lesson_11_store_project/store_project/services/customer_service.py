@@ -1,3 +1,5 @@
+from sqlite3 import IntegrityError
+
 from store_project.repositories.customer_repository import CustomerRepository
 
 from store_project.models.customer import Customer
@@ -17,4 +19,15 @@ class CustomerService:
         :param customer:
         :return:
         """
-        self.__customer_repository.add_customer(customer)
+        try:
+            self.__customer_repository.add_customer(customer)
+        except IntegrityError:
+            print("Customer already exists")  # log issue
+
+    def get_customer_by_id(self, customer_id: int) -> Customer:
+        """
+        Return customer by id.
+        :param customer_id:
+        :return:
+        """
+        return self.__customer_repository.get_customer_by_id(customer_id)

@@ -57,10 +57,10 @@ class Database:
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS order_details (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                customer_id INTEGER,
                 order_id INTEGER,
+                product_id INTEGER,
                 quantity REAL NOT NULL,
-                FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,
+                FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
                 FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE
             )
         """)
