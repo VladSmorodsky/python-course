@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Tuple
 
 from store_project.repositories.order_repository import OrderRepository
@@ -5,6 +6,8 @@ from store_project.repositories.order_repository import OrderRepository
 from store_project.models.customer import Customer
 
 from store_project.models.order import Order
+
+from store_project.models.product import Product
 
 
 class OrderService:
@@ -48,3 +51,24 @@ class OrderService:
         :return:
         """
         return self.__order_repository.get_customer_orders_count(customer_id)
+
+    def get_order_list_with_customers(self) -> List[Tuple[str, int, datetime]]:
+        """
+        Get customer orders list with customer name
+        :return:
+        """
+        return self.__order_repository.get_order_list_with_customers()
+
+    def get_customers_totals(self) -> List[Tuple[Customer, float]]:
+        """
+        Get customer totals
+        :return:
+        """
+        return self.__order_repository.get_customers_totals()
+
+    def get_products_totals(self) -> List[Tuple[Product, float]]:
+        """
+        Get products totals
+        :return:
+        """
+        return self.__order_repository.get_products_totals()

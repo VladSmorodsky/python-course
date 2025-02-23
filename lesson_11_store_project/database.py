@@ -1,5 +1,7 @@
 import sqlite3
 
+from total_revenue_per_product_aggregator import TotalRevenuePerProductAggregator
+
 
 class Database:
     """
@@ -9,6 +11,7 @@ class Database:
 
     def __init__(self, db_file: str) -> None:
         self.__connection = sqlite3.connect(db_file)
+        self.__connection.create_aggregate('total_revenue_per_product', 2, TotalRevenuePerProductAggregator)
 
     @property
     def connection(self) -> sqlite3.Connection:
@@ -64,5 +67,16 @@ class Database:
                 FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE
             )
         """)
+        self.__connection.commit()
+        cursor.execute("""
+            CREATE TRIGGER IF NOT EXISTS update_stock AFTER INSERT ON order_details
+            BEGIN
+                 UPDATE products
+                 SET stock = stock - NEW.quantity
+                 WHERE id = NEW.product_id;
+            END;
+        """)
+        self.__connection.commit()
+        cursor.execute("""CREATE INDEX IF NOT EXISTS idx_customers_email ON customers(email);""")
         self.__connection.commit()
         cursor.close()

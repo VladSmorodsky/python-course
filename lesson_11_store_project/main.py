@@ -1,10 +1,8 @@
 import os
-from typing import List
 
 from dotenv import load_dotenv
 
 from database import Database
-from store_project.models.order import Order
 from store_project.services.order_service import OrderService
 from store_project.repositories.order_repository import OrderRepository
 from store_project.models.product import Product
@@ -81,7 +79,7 @@ def create_products():
             print(error)
 
 
-def create_order():
+def create_orders():
     """
     Client function that adds test orders into db.
     :return:
@@ -154,21 +152,100 @@ def get_matched_product(title: str) -> None:
     :param title:
     :return:
     """
-    print('Matched Product from start:')
+    print('Matched Products from start:')
     for product in product_service.get_matched_products_from_start(title):
         print(product)
 
+    print('Matched Products')
+    for product in product_service.get_matched_products(title):
+        print(product)
 
+
+def get_limited_products(page: int = 1) -> None:
+    """
+    Client function that gets limited products from db.
+    :param page:
+    :return:
+    """
+    print('First Page:')
+    for product in product_service.get_paginated_products(page):
+        print(product)
+    print('Next Page:')
+    for product in product_service.get_paginated_products(page + 1):
+        print(product)
+
+
+def get_order_list_with_customers() -> None:
+    """
+    Client function that gets orders list from db.
+    :return:
+    """
+    print('Orders List With Customers:')
+    print('CUSTOMER_NAME | ORDER_ID | ORDER_DATE')
+    for order in order_service.get_order_list_with_customers():
+        print(f"{order[0]} | {order[1]} | {order[2]}")
+
+
+def get_sellable_products() -> None:
+    """
+    Client function that gets products that was sold at least once.
+    :return:
+    """
+    print('Sellable Products:')
+    for product in product_service.get_sellable_products():
+        print(product)
+
+
+def get_customers_totals():
+    """
+    Client function that gets customers totals from db.
+    :return:
+    """
+    print('Customers Totals:')
+    for customer, total in order_service.get_customers_totals():
+        print(f"{customer.name}: {total}")
+
+
+def get_products_with_stock_status() -> None:
+    """
+    Client function that gets products with stock status.
+    :return:
+    """
+    print('Products with Stock Status:')
+    for product_name, status in product_service.get_products_with_stock_status():
+        print(f"{product_name}: {status}")
+
+
+def get_products_totals() -> None:
+    """
+    Client function that gets products totals from db.
+    :return:
+    """
+    print('Products Totals:')
+    for product_id, product_name, total in order_service.get_products_totals():
+        print(f"{product_id}. {product_name}: {total}")
 
 
 # Execute client code
-# create_customers()
-# create_products()
-# create_order()
+create_customers()
+create_products()
+create_orders()
 
 # Get all available products
-# get_available_products()
+get_available_products()
 get_customer_orders(3)
 get_customer_orders_count(3)
 
-get_matched_product('M')
+# Get matched products
+get_matched_product('Xia')
+
+# Get limiting products
+get_limited_products()
+
+get_order_list_with_customers()
+get_sellable_products()
+get_customers_totals()
+
+get_products_with_stock_status()
+
+get_products_totals()
