@@ -1,0 +1,8 @@
+[project]
+name = "store_project"
+version = "0.1.0"
+description = "Create store project for practising in SQL."
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["store_project"]  # ["*"] by default
