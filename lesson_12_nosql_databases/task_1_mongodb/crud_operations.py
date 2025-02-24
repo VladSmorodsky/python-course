@@ -62,6 +62,16 @@ def create_order() -> None:
             "created_at": datetime(year=2025, month=1, day=15, hour=10, minute=30)
         },
         {
+            "order_number": "123456",
+            "client": "John Doe",
+            "products": [
+                {"name": "chicken", "quantity": 3},
+                {"name": "apple", "quantity": 2}
+            ],
+            "total_price": 0,
+            "created_at": datetime(year=2025, month=2, day=23, hour=10, minute=30)
+        },
+        {
             "order_number": "234567",
             "client": "Test Name",
             "products": [
