@@ -102,7 +102,6 @@ def get_orders_for_one_month() -> Cursor[Mapping[str, Any] | Any]:
     :return:
     """
     order_collection = get_order_collection()
-    print(datetime.now() - timedelta(days=30))
     return order_collection.find({"created_at": {"$gte": datetime.now() - timedelta(days=30)}})
 
 

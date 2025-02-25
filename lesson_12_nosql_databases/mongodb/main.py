@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from create_db import clear_db
-from crud_operations import add_products, create_order, get_orders_for_one_month, delete_not_available_products
+from mongodb_client import add_products, create_order, get_orders_for_one_month, delete_not_available_products
 from aggregation_operations import get_sold_count_by_period_of_time, get_customer_order_count
 
 

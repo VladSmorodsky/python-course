@@ -87,14 +87,11 @@ def update_event_metadata(event_id: uuid.UUID, metadata: dict[str, Any]) -> None
         [event_id, datetime.now()],
     )
 
-    # Оновлюємо кожен рядок окремо
     for row in rows:
         session.execute(
             "UPDATE event_logs SET metadata = %s WHERE event_id = %s AND timestamp = %s",
             [metadata, row.event_id, row.timestamp]
         )
-    # session.execute("""UPDATE event_logs SET metadata = %s WHERE event_id = %s AND timestamp < %s """,
-    #                 (metadata, event_id, datetime.now()))
 
 
 def delete_old_events() -> None:
