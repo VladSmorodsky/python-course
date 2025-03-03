@@ -1,9 +1,12 @@
+import logging
 import random
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Optional
 
 from Organism import Organism
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def simulate_organism_life(organism: Organism) -> Optional[Organism]:
@@ -34,8 +37,7 @@ def run_evolution_simulation() -> None:
             result = future.result()
             if result:
                 new_population.append(result)
-
-    print(f"New organism population count: {len(new_population)}")
+    logging.info(f"New organism population count: {len(new_population)}")
 
 
 if __name__ == "__main__":

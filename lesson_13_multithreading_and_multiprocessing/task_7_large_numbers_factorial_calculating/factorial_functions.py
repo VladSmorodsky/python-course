@@ -23,7 +23,6 @@ def calculate_parallel_factorial(number: int, processes_count: int) -> int:
     """
     chunk_size = number // processes_count
     results = []
-
     with multiprocessing.Pool(processes_count) as pool:
         for process_index in range(processes_count):
             start = process_index * chunk_size + 1

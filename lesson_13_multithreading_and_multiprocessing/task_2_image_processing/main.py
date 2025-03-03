@@ -1,8 +1,11 @@
+import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
 from typing import Tuple, Optional
 
 from PIL import Image
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def resize_image(image_path: str, output_folder: str, size: Optional[Tuple[int, int]] = (100, 100)) -> None:
@@ -19,9 +22,9 @@ def resize_image(image_path: str, output_folder: str, size: Optional[Tuple[int, 
             img_name = os.path.basename(image_path)
             output_path = os.path.join(output_folder, img_name)
             image.save(output_path)
-            print(f"Image resized: {output_path}")
+            logging.info(f"Image resized: {output_path}")
     except Exception as exception:
-        print("Image not processed:", exception)
+        logging.error(f"Image not processed: {exception}")
 
 
 def processing_images(image_dir: str, output_folder: str) -> None:

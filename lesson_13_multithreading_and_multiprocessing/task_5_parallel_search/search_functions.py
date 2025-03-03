@@ -1,5 +1,8 @@
+import logging
 import os
-from threading import Thread
+from concurrent.futures import ThreadPoolExecutor
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def search_text(file_path: str, searched_text: str) -> None:
@@ -13,11 +16,11 @@ def search_text(file_path: str, searched_text: str) -> None:
         with open(file_path, 'r') as file:
             for line_number, line in enumerate(file, start=1):
                 if searched_text.lower() in line.lower():
-                    print(f'{file_path}: Found {searched_text} on line {line_number}')
+                    logging.info(f'{file_path}: Found {searched_text} on line {line_number}')
     except FileNotFoundError as error:
-        print(error)
+        logging.error(error)
     except Exception as error:
-        print(error)
+        logging.error(error)
 
 
 def search_text_in_dir(dir_path: str, searched_text: str) -> None:
@@ -29,15 +32,11 @@ def search_text_in_dir(dir_path: str, searched_text: str) -> None:
     """
     try:
         files_in_dir = os.listdir(dir_path)
-        threads = []
-        for file_name in files_in_dir:
-            thread = Thread(target=search_text, args=(os.path.join(dir_path, file_name), searched_text,))
-            threads.append(thread)
-            thread.start()
-        for thread in threads:
-            thread.join()
-        print('Processes done.')
+        with ThreadPoolExecutor() as executor:
+            for file_name in files_in_dir:
+                executor.submit(search_text, os.path.join(dir_path, file_name), searched_text)
+        logging.info(f'Processes done.')
     except FileNotFoundError as error:
-        print(error)
+        logging.error(error)
     except Exception as error:
-        print(error)
+        logging.error(error)
