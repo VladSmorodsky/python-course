@@ -2,7 +2,7 @@ import multiprocessing
 from typing import List
 
 
-def calculate_sum(numbers, result, index):
+def calculate_sum(numbers: List[int | float], result: List[int: float], index: int):
     """
     Calculate the sum of numbers[index]
     :param numbers:
@@ -26,10 +26,10 @@ def total_array_sum(large_array: List[int | float]) -> float:
     processes = []
     results = multiprocessing.Array('l', num_processes)
 
-    for i in range(num_processes):
-        start_index = i * chunk_size
-        end_index = start_index + chunk_size if i < (num_processes - 1) else len(large_array)
-        p = multiprocessing.Process(target=calculate_sum, args=(large_array[start_index:end_index], results, i))
+    for index in range(num_processes):
+        start_index = index * chunk_size
+        end_index = start_index + chunk_size if index < (num_processes - 1) else len(large_array)
+        p = multiprocessing.Process(target=calculate_sum, args=(large_array[start_index:end_index], results, index))
         processes.append(p)
         p.start()
     for p in processes:
