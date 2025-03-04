@@ -12,6 +12,7 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 def simulate_organism_life(organism: Organism) -> Optional[Organism]:
     """
     Simulate organism life
+    :param organism:
     :return:
     """
     evolution_parts_number = 3
