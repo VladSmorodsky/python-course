@@ -28,7 +28,7 @@ def _make_request(url: str) -> Optional[requests.Response]:
         logging.error("HTTP Error: {}".format(error))
         return None
     except Exception as error:
-        logging.error(f"File downloading failed: {error}", )
+        logging.error(f"Page downloading failed: {error}", )
         return None
 
 
