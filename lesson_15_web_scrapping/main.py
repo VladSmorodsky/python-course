@@ -1,16 +1,16 @@
 import logging
-import re
-from datetime import datetime
 from typing import Optional, List
 
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 
+from validators.validator import Validator
 from parsers.dou_news_parser import DouNewsParser
-from parsers.abc_parser import ABCParser
+from parsers.abc_parser import ABCParser, NewsItem
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 
 def get_page(url: str) -> Optional[BeautifulSoup]:
@@ -21,7 +21,7 @@ def get_page(url: str) -> Optional[BeautifulSoup]:
     """
     try:
         headers = {
-            'User-Agent': 'Custom User Agent'
+            'User-Agent': 'Custom User Agent'  # Sites can return 403 error if User-Agent header not defined (e.g. DOU).
         }
         response = requests.get(url, headers=headers)
         response.raise_for_status()
@@ -38,7 +38,7 @@ def get_page(url: str) -> Optional[BeautifulSoup]:
         logging.error(error)
 
 
-def parse_news(parser: ABCParser, soup: BeautifulSoup) -> Optional[List[dict[str, str]]]:
+def parse_news(parser: ABCParser, soup: BeautifulSoup) -> Optional[List[NewsItem]]:
     """
     Parse news page and get each news item: title, url, description, published_at
     :param parser: News parser
@@ -47,62 +47,38 @@ def parse_news(parser: ABCParser, soup: BeautifulSoup) -> Optional[List[dict[str
     """
     try:
         return parser.parse(soup)
-        # news_block = 'b-lenta'
-        # news_postcard = 'b-postcard'
-        # news_postcard_title = 'title'
-        # news_postcard_description = 'b-typo'
-        # news_postcard_info = 'b-info'
-        # news_list = []
-        # news_items = soup.find('div', class_=news_block)
-        # for news_item in news_items.find_all('article', class_=news_postcard):
-        #     news_item_title = news_item.find('h2', class_=news_postcard_title)
-        #     news_item_link = news_item_title.find('a')['href'].strip()
-        #     news_item_title_text = news_item_title.find('a').text.strip()
-        #     news_item_description = news_item.find('p', class_=news_postcard_description).text.strip()
-        #     news_item_info = news_item.find('div', class_=news_postcard_info)
-        #     news_item_info_date = news_item_info.find('time').text.strip()
-        #     news_list.append(
-        #         {
-        #             'title': news_item_title_text,
-        #             'link': news_item_link,
-        #             'summary': news_item_description,
-        #             'date': _format_date_string(news_item_info_date)
-        #         }
-        #     )
-        # return news_list
+    except ValueError as error:
+        logging.error(error)
     except Exception as error:
         logging.error(error)
 
 
-# def _format_date_string(date_string: str) -> str:
-#     """
-#     Add year to date string if not exists
-#     :param date_string:
-#     :return:
-#     """
-#     if re.search(r'\d{4}', date_string):
-#         return date_string
-#     current_datetime = datetime.now()
-#     current_year = current_datetime.year
-#     comma_index = date_string.index(',')
-#     return f"{date_string[:comma_index]} {current_year}{date_string[comma_index:]}"
-
-
-def save_to_csv(news_list: List[dict[str, str]]) -> None:
+def save_to_csv(news_list: List[NewsItem]) -> None:
     """
     Save news list to csv
     :param news_list:
     :return:
     """
-    df = pd.DataFrame(news_list)
-    df.to_csv('news.csv', index=False)
+    try:
+        if not news_list:
+            logging.error('No news items to save.')
+            return
+        df = pd.DataFrame(news_list)
+        df.to_csv('news.csv', index=False)
+    except PermissionError as error:
+        logging.error(error)
+    except FileNotFoundError as error:
+        logging.error(error)
+    except Exception as error:
+        logging.error(error)
 
 
 def main():
     site_url = 'https://dou.ua/lenta/news'
     soap_object = get_page(site_url)
-    dou_news_parser = DouNewsParser()
     if soap_object:
+        news_validator = Validator()  # Create Validator instance
+        dou_news_parser = DouNewsParser(news_validator, logger)  # Create DouNewsParser instance
         data = parse_news(dou_news_parser, soap_object)
         save_to_csv(data)
 
