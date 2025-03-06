@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import time
+from asyncio import Semaphore
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from typing import Optional
 
@@ -66,26 +67,31 @@ async def async_request_method() -> None:
     Make request 500 times using async method
     :return:
     """
+    semaphore = asyncio.Semaphore(5)
     async with aiohttp.ClientSession() as session:
-        await asyncio.gather(*[fetch(session, 'https://docs.python.org/3/') for _ in range(500)])
+        await asyncio.gather(*[fetch(session, 'https://docs.python.org/3/', semaphore) for _ in range(500)])
 
 
-async def fetch(session: aiohttp.ClientSession, url: str) -> Optional[str]:
+async def fetch(session: aiohttp.ClientSession, url: str, semaphore: Semaphore) -> Optional[str]:
     """
     Make async request
     :param session:
-    :param url:
+    :param url: Domain name (e.g. https://example.com)
+    :param semaphore: Used for limiting simultaneous downloads
     :return:
     """
     try:
-        async with session.get(url) as response:
-            response.raise_for_status()
-            return await response.text()
+        async with semaphore:
+            async with session.get(url) as response:
+                response.raise_for_status()
+                return await response.text()
     except aiohttp.ClientResponseError as error:
         logging.error(error)
     except ValueError as error:
         logging.error(error)
     except ConnectionError as error:
+        logging.error(error)
+    except asyncio.CancelledError as error:
         logging.error(error)
     except Exception as error:
         logging.error(error)

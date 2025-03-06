@@ -10,9 +10,9 @@ async def slow_task(waiting_seconds: int) -> None:
     :param waiting_seconds:
     :return:
     """
-    logging.info('Slow task starts...')
+    logging.debug('Slow task starts...')
     await asyncio.sleep(waiting_seconds)
-    logging.info('Slow task finished!')
+    logging.debug('Slow task finished!')
 
 
 async def main() -> None:
