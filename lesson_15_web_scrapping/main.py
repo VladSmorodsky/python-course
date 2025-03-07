@@ -1,33 +1,45 @@
+import asyncio
 import logging
+import os
+from asyncio import Semaphore
 from typing import Optional, List
 
+import aiohttp
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 
 from validators.validator import Validator
 from parsers.dou_news_parser import DouNewsParser
 from parsers.abc_parser import ABCParser, NewsItem
 
+load_dotenv()
+
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 
-def get_page(url: str) -> Optional[BeautifulSoup]:
+async def get_page(url: str, semaphore: Semaphore) -> Optional[BeautifulSoup]:
     """
     Get page content from url
     :param url: site url
+    :param semaphore: used for controlling of simultaneous pages downloading
     :return:
     """
     try:
-        headers = {
-            'User-Agent': 'Custom User Agent'  # Sites can return 403 error if User-Agent header not defined (e.g. DOU).
-        }
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        if response.text == '' or response.text is None:
-            raise ValueError(f'Content is empty: {url}')
-        return BeautifulSoup(response.text, 'lxml')
+        async with semaphore:
+            async with aiohttp.ClientSession() as session:
+                # Sites can return 403 error if User-Agent header not defined (e.g. DOU).
+                headers = {
+                    'User-Agent': 'Custom User Agent'
+                }
+                async with session.get(url, headers=headers) as response:
+                    response.raise_for_status()
+                    response = await response.text()
+                    if response == '' or response is None:
+                        raise ValueError(f'Content is empty: {url}')
+                    return BeautifulSoup(response, 'lxml')
     except requests.exceptions.ConnectionError as error:
         logging.error("Connection Error: {}".format(error))
     except requests.exceptions.HTTPError as error:
@@ -64,7 +76,7 @@ def save_to_csv(news_list: List[NewsItem]) -> None:
             logging.error('No news items to save.')
             return
         df = pd.DataFrame(news_list)
-        df.to_csv('news.csv', index=False)
+        df.to_csv(os.getenv('CSV_FILE_NAME', 'file.csv'), index=False)
     except PermissionError as error:
         logging.error(error)
     except FileNotFoundError as error:
@@ -73,9 +85,12 @@ def save_to_csv(news_list: List[NewsItem]) -> None:
         logging.error(error)
 
 
-def main():
-    site_url = 'https://dou.ua/lenta/news'
-    soap_object = get_page(site_url)
+async def main():
+    site_url = os.getenv('SITE_URL')
+    if site_url is None or site_url == '':
+        raise ValueError('SITE_URL environment variable is not set')
+    semaphore = asyncio.Semaphore(5)
+    soap_object = await get_page(site_url, semaphore)
     if soap_object:
         news_validator = Validator()  # Create Validator instance
         dou_news_parser = DouNewsParser(news_validator, logger)  # Create DouNewsParser instance
@@ -84,4 +99,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        asyncio.run(main())
+    except ValueError as error:
+        logging.error(error)
