@@ -76,7 +76,8 @@ def save_to_csv(news_list: List[NewsItem]) -> None:
             logging.error('No news items to save.')
             return
         df = pd.DataFrame(news_list)
-        df.to_csv(os.getenv('CSV_FILE_NAME', 'file.csv'), index=False)
+        unique_df = df.drop_duplicates()  # Remove duplicates in the data frame
+        unique_df.to_csv(os.getenv('CSV_FILE_NAME', 'file.csv'), index=False)
     except PermissionError as error:
         logging.error(error)
     except FileNotFoundError as error:
