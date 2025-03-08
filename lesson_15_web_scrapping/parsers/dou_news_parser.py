@@ -92,3 +92,6 @@ class DouNewsParser(ABCParser):
             if month_key in date_string:
                 return date_string.replace(month_key, month_mapping[month_key])
         return date_string
+
+    def __repr__(self) -> str:
+        return self.__class__.__name__

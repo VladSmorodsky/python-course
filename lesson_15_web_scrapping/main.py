@@ -1,15 +1,14 @@
+import argparse
 import asyncio
 import logging
 import os
 from asyncio import Semaphore
-from typing import Optional, List
 
-import aiohttp
-import requests
-import pandas as pd
-from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 
+from get_page import get_page
+from parse_news import parse_news
+from save_file import save_to_csv
 from validators.news_item_validator import NewsItemValidator
 from parsers.dou_news_parser import DouNewsParser
 from parsers.abc_parser import ABCParser, NewsItem
@@ -19,84 +18,50 @@ load_dotenv()
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Create CLI processor
+cli_processor = argparse.ArgumentParser(description="Process command-line arguments")
 
-async def get_page(url: str, semaphore: Semaphore) -> Optional[BeautifulSoup]:
-    """
-    Get page content from url
-    :param url: site url
-    :param semaphore: used for controlling of simultaneous pages downloading
-    :return:
-    """
-    try:
-        async with semaphore:
-            async with aiohttp.ClientSession() as session:
-                # Sites can return 403 error if User-Agent header not defined (e.g. DOU).
-                headers = {
-                    'User-Agent': 'Custom User Agent'
-                }
-                async with session.get(url, headers=headers) as response:
-                    response.raise_for_status()
-                    response = await response.text()
-                    if response == '' or response is None:
-                        raise ValueError(f'Content is empty: {url}')
-                    return BeautifulSoup(response, 'lxml')
-    except requests.exceptions.ConnectionError as error:
-        logging.error("Connection Error: {}".format(error))
-    except requests.exceptions.HTTPError as error:
-        logging.error("HTTP Error: {}".format(error))
-    except ValueError as error:
-        logging.error("ValueError: {}".format(error))
-    except Exception as error:
-        logging.error(error)
-
-
-def parse_news(parser: ABCParser, soup: BeautifulSoup) -> Optional[List[NewsItem]]:
-    """
-    Parse news page and get each news item: title, url, description, published_at
-    :param parser: News parser
-    :param soup: BeautifulSoup object that appropriate to parser.
-    :return:
-    """
-    try:
-        return parser.parse(soup)
-    except ValueError as error:
-        logging.error(error)
-    except Exception as error:
-        logging.error(error)
-
-
-def save_to_csv(news_list: List[NewsItem]) -> None:
-    """
-    Save news list to csv
-    :param news_list:
-    :return:
-    """
-    try:
-        if not news_list:
-            logging.error('No news items to save.')
-            return
-        df = pd.DataFrame(news_list)
-        unique_df = df.drop_duplicates()  # Remove duplicates in the data frame
-        unique_df.to_csv(os.getenv('CSV_FILE_NAME', 'file.csv'), index=False)
-    except PermissionError as error:
-        logging.error(error)
-    except FileNotFoundError as error:
-        logging.error(error)
-    except Exception as error:
-        logging.error(error)
+# Add arguments
+cli_processor.add_argument("--pages", type=int, help="News site's pages count for storing", default=1)
+cli_processor.add_argument("--parser", type=str, help="Select web site's parser", default='dounewsparser')
 
 
 async def main():
+    """
+    Main function that contains application configurations (set parsers, set web site's page count for parsing)
+    :return:
+    """
+    args = cli_processor.parse_args()
     site_url = os.getenv('SITE_URL')
     if site_url is None or site_url == '':
         raise ValueError('SITE_URL environment variable is not set')
+    news_validator = NewsItemValidator()  # Create Validator instance
+    dou_news_parser = DouNewsParser(news_validator, logger)  # Create DouNewsParser instance
+    parser_registry = {dou_news_parser.__repr__().lower(): dou_news_parser}  # Add it into registry
+    parser_name = args.parser
+    if parser_name not in parser_registry:
+        logging.error('Invalid parser specified: {}'.format(args.parser))
+        return
     semaphore = asyncio.Semaphore(5)
-    soap_object = await get_page(site_url, semaphore)
+    current_page = 1
+    while current_page <= args.pages:
+        await store_news(site_url, semaphore, parser_registry[parser_name], current_page)
+        current_page += 1
+
+
+async def store_news(site_url: str, semaphore: Semaphore, parser: ABCParser, page_number: int = 1) -> None:
+    """
+    Get and store news in the csv file
+    :param site_url:
+    :param semaphore:
+    :param page_number:
+    :param parser:
+    :return:
+    """
+    soap_object = await get_page(site_url, semaphore, logger, page_number)
     if soap_object:
-        news_validator = NewsItemValidator()  # Create Validator instance
-        dou_news_parser = DouNewsParser(news_validator, logger)  # Create DouNewsParser instance
-        data = parse_news(dou_news_parser, soap_object)
-        save_to_csv(data)
+        data = parse_news(parser, soap_object, logger)
+        save_to_csv(data, logger)
 
 
 if __name__ == '__main__':
