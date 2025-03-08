@@ -1,7 +1,7 @@
 from parsers.abc_parser import NewsItem
 
 
-class Validator:
+class NewsItemValidator:
     """
     Validating string results
     """
@@ -12,6 +12,9 @@ class Validator:
         :param news_item:
         :return:
         """
-        for key in news_item:
-            if news_item[key] is None or news_item[key] == '':
+        required_fields = ['title', 'summary', 'link', 'date']
+        for key in required_fields:
+            if key not in news_item.keys():
+                raise ValueError(f'{key} is not defined')
+            if news_item[key] == '':
                 raise ValueError(f'Value of {key} cannot be empty')

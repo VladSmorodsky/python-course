@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup, PageElement, Tag, NavigableString
 
 from parsers.abc_parser import ABCParser, NewsItem
 
-from validators.validator import Validator
+from validators.news_item_validator import NewsItemValidator
 
 
 class DouNewsParser(ABCParser):
@@ -20,7 +20,7 @@ class DouNewsParser(ABCParser):
     news_postcard_description = 'b-typo'
     news_postcard_info = 'b-info'
 
-    def __init__(self, validator: Validator, logger: Logger) -> None:
+    def __init__(self, validator: NewsItemValidator, logger: Logger) -> None:
         self._validator = validator
         self._logger = logger
 
@@ -45,8 +45,12 @@ class DouNewsParser(ABCParser):
                 news_item['date'] = self._format_date_string(news_item_info)
                 self._validator.validate(news_item)  # Validate news item
                 news_list.append(news_item)
+            except KeyError as error:
+                self._logger.error(error)
             except ValueError as error:
                 self._logger.error(error)  # Log error and get next news item
+            except AttributeError as error:
+                self._logger.error(error)
         return news_list
 
     def _format_date_string(self, postcard_info: PageElement | Tag | NavigableString) -> datetime:

@@ -10,7 +10,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 
-from validators.validator import Validator
+from validators.news_item_validator import NewsItemValidator
 from parsers.dou_news_parser import DouNewsParser
 from parsers.abc_parser import ABCParser, NewsItem
 
@@ -93,7 +93,7 @@ async def main():
     semaphore = asyncio.Semaphore(5)
     soap_object = await get_page(site_url, semaphore)
     if soap_object:
-        news_validator = Validator()  # Create Validator instance
+        news_validator = NewsItemValidator()  # Create Validator instance
         dou_news_parser = DouNewsParser(news_validator, logger)  # Create DouNewsParser instance
         data = parse_news(dou_news_parser, soap_object)
         save_to_csv(data)
