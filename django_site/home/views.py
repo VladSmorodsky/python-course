@@ -1,5 +1,3 @@
-from pyexpat.errors import messages
-
 from django.http import HttpResponse
 
 from django.shortcuts import render
@@ -13,7 +11,7 @@ def home_view(request) -> HttpResponse:
     :param request:
     :return:
     """
-    return render(request, 'home.html', {
+    return render(request, 'home/home.html', {
         "message": 'Welcome to Main Page'
     })
 
@@ -24,7 +22,7 @@ def about_view(request) -> HttpResponse:
     :param request:
     :return:
     """
-    return render(request, 'about.html', {
+    return render(request, 'home/about.html', {
         "message": 'About us'
     })
 
@@ -35,7 +33,7 @@ def contact_view(request) -> HttpResponse:
     :param request:
     :return:
     """
-    return render(request, 'contact.html', {
+    return render(request, 'home/contact.html', {
         "message": 'Contact us'
     })
 
@@ -47,7 +45,7 @@ def post_view(request, post_id: int) -> HttpResponse:
     :param post_id:
     :return:
     """
-    return render(request, 'post.html', {
+    return render(request, 'home/post.html', {
         "post_id": post_id
     })
 
@@ -59,7 +57,7 @@ def profile_view(request, username: str) -> HttpResponse:
     :param username:
     :return:
     """
-    return render(request, 'profile.html', {
+    return render(request, 'home/profile.html', {
         "username": username
     })
 
@@ -73,6 +71,6 @@ def event_view(request, year: int, month: int, day: int) -> HttpResponse:
     :param day:
     :return:
     """
-    return render(request, 'event.html', {
+    return render(request, 'home/event.html', {
         "event_date": f"{year}-{month}-{day}"
     })
