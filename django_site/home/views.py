@@ -53,13 +53,26 @@ def post_view(request, post_id: int) -> HttpResponse:
 
 
 def profile_view(request, username: str) -> HttpResponse:
+    """
+    Profile page view
+    :param request:
+    :param username:
+    :return:
+    """
     return render(request, 'profile.html', {
         "username": username
     })
 
 
 def event_view(request, year: int, month: int, day: int) -> HttpResponse:
+    """
+    Event page view
+    :param request:
+    :param year:
+    :param month:
+    :param day:
+    :return:
+    """
     return render(request, 'event.html', {
         "event_date": f"{year}-{month}-{day}"
     })
-    # return HttpResponse(f'Event date: {year}-{month}-{day}')
