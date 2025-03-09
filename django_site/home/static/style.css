@@ -1,0 +1,44 @@
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    padding: 10px;
+}
+
+h1 {
+    color: #39375B;
+}
+
+.post-header {
+    background: linear-gradient(45deg, #ff512f, #dd2476, #1d2b64, #f8cdda);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile-image-container {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    border: 1px solid black;
+    overflow: hidden;
+    margin-right: 3px;
+}
+
+.profile-image-container img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.username {
+    background: linear-gradient(45deg, #ff512f, #dd2476, #1d2b64, #f8cdda);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
