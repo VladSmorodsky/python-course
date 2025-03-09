@@ -4,6 +4,7 @@ import logging
 import os
 from asyncio import Semaphore
 
+import aiohttp
 from dotenv import load_dotenv
 
 from get_page import get_page
@@ -11,7 +12,7 @@ from parse_news import parse_news
 from save_file import save_to_csv
 from validators.news_item_validator import NewsItemValidator
 from parsers.dou_news_parser import DouNewsParser
-from parsers.abc_parser import ABCParser, NewsItem
+from parsers.abc_parser import ABCParser
 
 load_dotenv()
 
@@ -58,10 +59,12 @@ async def store_news(site_url: str, semaphore: Semaphore, parser: ABCParser, pag
     :param parser:
     :return:
     """
-    soap_object = await get_page(site_url, semaphore, logger, page_number)
-    if soap_object:
-        data = parse_news(parser, soap_object, logger)
-        save_to_csv(data, logger)
+    async with semaphore:
+        async with aiohttp.ClientSession() as session:
+            soap_object = await get_page(site_url, session, page_number)
+            if soap_object:
+                data = parse_news(parser, soap_object, logger)
+                save_to_csv(data, logger)
 
 
 if __name__ == '__main__':
