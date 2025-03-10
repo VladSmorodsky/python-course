@@ -1,0 +1,12 @@
+{% extends "home/base.html" %}
+
+{% block title %} Post {{ post_id }} {% endblock %}
+
+{% block content %}
+    <h1 class="post-header">Post {{ post_id }}</h1>
+    <div>
+        <p>
+            You are watching the post with {{ post_id }}
+        </p>
+    </div>
+{% endblock %}
