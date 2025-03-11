@@ -1,0 +1,8 @@
+[project]
+name = "web_scrapping"
+version = "0.1.0"
+description = ""
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+include = ["parsers", "validators", "tests"]  # ["*"] by default
