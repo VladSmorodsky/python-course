@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ page_name|capfirst }}{% endblock %}
+
+{% block content %}
+    <h1>Services</h1>
+    <p>At PySite, we specialize in delivering high-quality software solutions tailored to your business needs. Our
+        expertise covers a wide range of development services, ensuring innovation, reliability, and efficiency.</p>
+    <p>Let PySite bring your ideas to life with cutting-edge software solutions! 💡</p>
+    {% include 'components/accordion.html' with items=service_list accordion_id='services-accordion' %}
+{% endblock %}
