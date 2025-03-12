@@ -3,6 +3,8 @@ from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import View
 
+from . import forms
+
 
 # Create your views here.
 
@@ -38,10 +40,14 @@ def about(request: HttpRequest) -> HttpResponse:
 class ServicesView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
         """
-        Render services page
+        Render services page. Filter service list if service_name parameter is provided in GET request.
+        If filtered result is empty, will return whole list of services
         :param request:
         :return:
         """
+        form = forms.SearchServicesForm(request.GET or None)
+        service_name = ''
+        filtered_list = []
         service_list = [
             {
                 'title': 'Custom Software Development',
@@ -76,9 +82,17 @@ class ServicesView(View):
                 'content': 'We offer expert guidance on software architecture, technology stack selection, and ongoing system support to optimize performance.'
             }
         ]
+        if form.is_valid():
+            service_name = form.cleaned_data['service_name'].strip()
+            if service_name is not None and service_name != '':
+                filtered_list = list(
+                    filter(lambda service: service_name.lower() in service['title'].lower(), service_list)
+                )
         return render(request, 'main/services.html', {
             'page_name': 'services',
-            'service_list': service_list,
+            'service_list': filtered_list if len(filtered_list) > 0 else service_list,
+            'search_result': service_name,
+            'search_result_count': len(filtered_list),
         })
 
 
