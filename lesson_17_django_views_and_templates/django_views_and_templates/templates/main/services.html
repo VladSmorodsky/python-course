@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ page_name|capfirst }}{% endblock %}
+
+{% block content %}
+    <h1>Services</h1>
+    <div>
+        <p>At PySite, we specialize in delivering high-quality software solutions tailored to your business needs. Our
+            expertise covers a wide range of development services, ensuring innovation, reliability, and efficiency.</p>
+        <p>Let PySite bring your ideas to life with cutting-edge software solutions! 💡</p>
+    </div>
+    <div class="my-3 d-flex flex-column ">
+        <form method="get" action="{% url 'services' %}">
+            <label for="service-name" class="fw-bold">Let's find service for you!</label>
+            <div class="d-flex w-50">
+                <input id="service-name" class="form-control" type="text" placeholder="Service name" name="service_name"
+                       value="{{ search_result }}" required/>
+                <button class="btn btn-primary mx-3" type="submit">Search</button>
+            </div>
+        </form>
+        {% if search_result_count == 0 and search_result != '' %}
+            <p class="py-1">No result found with value <b>{{ search_result }}</b>. You can see the whole list of
+                services below:</p>
+        {% endif %}
+    </div>
+    {% include 'components/accordion.html' with items=service_list accordion_id='services-accordion' %}
+{% endblock %}

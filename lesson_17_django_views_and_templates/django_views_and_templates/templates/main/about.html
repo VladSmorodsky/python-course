@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ page_name|capfirst }}{% endblock %}
+
+{% block content %}
+    <div>
+        <h1> Our Mission</h1>
+        <p>At PySite, our mission is to empower businesses with innovative, high-quality software solutions that drive
+            efficiency, growth, and digital transformation. We are committed to:</p>
+        {% include 'components/list.html' with item_list=mission_list %}
+    </div>
+{% endblock %}
