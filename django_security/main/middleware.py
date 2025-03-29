@@ -3,6 +3,7 @@ import logging
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.shortcuts import redirect
+from django.utils.deprecation import MiddlewareMixin
 from django.utils.timezone import now
 
 logger = logging.getLogger(__name__)
@@ -32,6 +33,9 @@ class LoggingMiddleware:
 
 
 class NotFoundMiddleware:
+    """
+    Handle 404 error response
+    """
     def __init__(self, get_response) -> None:
         self.get_response = get_response
 
@@ -51,6 +55,9 @@ class NotFoundMiddleware:
 
 
 class InternalServerErrorMiddleware:
+    """
+    Handle 500 error response
+    """
     def __init__(self, get_response) -> None:
         self.get_response = get_response
 
@@ -65,4 +72,20 @@ class InternalServerErrorMiddleware:
             logger.error(
                 f"[{now()}]: {request.method} {request.path} {response.status_code} Internal Server Error: {response.content}")
             return redirect('home')
+        return response
+
+
+class RemoveServerHeaderMiddleware(MiddlewareMixin):
+    """
+    Remove server header from request
+    """
+
+    def process_response(self, request: HttpRequest, response: HttpResponse) -> HttpResponse:
+        """
+        Reassign server header from request
+        :param request:
+        :param response:
+        :return:
+        """
+        response.headers['Server'] = 'XXX'
         return response
