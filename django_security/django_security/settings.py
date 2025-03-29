@@ -51,6 +51,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'main.middleware.LoggingMiddleware',
+    'main.middleware.NotFoundMiddleware',
+    'main.middleware.InternalServerErrorMiddleware',
 ]
 
 ROOT_URLCONF = 'django_security.urls'
@@ -126,4 +129,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'INFO',
+        }
+    },
+    'loggers': {
+        'main': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        }
+    }
 }

@@ -12,11 +12,11 @@
                             class="btn btn-primary w-100">{{ auth_form_action|default:"Register" }}</button>
                 </div>
                 <div class="d-flex justify-content-center mt-3">
-{#                    {% if request.resolver_match.url_name == "login" %}#}
-{#                        <p class="m-0">Don't have an account? <a href="{% url 'register' %}">Create account</a></p>#}
-{#                    {% elif request.resolver_match.url_name == "register" %}#}
-{#                        <p class="m-0">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>#}
-{#                    {% endif %}#}
+                    {% if request.resolver_match.url_name == "login" %}
+                        <p class="m-0">Don't have an account? <a href="{% url 'register' %}">Create account</a></p>
+                    {% elif request.resolver_match.url_name == "register" %}
+                        <p class="m-0">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+                    {% endif %}
                 </div>
             </div>
         </form>

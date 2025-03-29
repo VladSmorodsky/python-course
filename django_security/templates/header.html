@@ -14,16 +14,9 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link">Welcome, {{ user.username }}!</a>
                     </li>
-{#                    <li class="nav-item">#}
-{#                        <a href="{% url 'logout' %}" class="nav-link text-danger">Logout</a>#}
-{#                    </li>#}
-{#                {% else %}#}
-{#                    <li class="nav-item">#}
-{#                        <a href="{% url 'login' %}" class="btn">Login</a>#}
-{#                    </li>#}
-{#                    <li class="nav-item">#}
-{#                        <a href="{% url 'register' %}" class="btn">Register</a>#}
-{#                    </li>#}
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="nav-link text-danger">Logout</a>
+                    </li>
                 {% endif %}
             </ul>
         </div>
