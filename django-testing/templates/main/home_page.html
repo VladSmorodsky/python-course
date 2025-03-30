@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Home{% endblock %}
+
+{% block content %}
+    {% include 'components/forms/task_create_form.html' with form=form %}
+{% endblock %}
