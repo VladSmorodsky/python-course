@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block page_title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="container-fluid">
+    {% if request.resolver_match.url_name != "login" and request.resolver_match.url_name != "register" %}
+        {% include 'header.html' %}
+    {% endif %}
+    <div class="container-fluid {% if request.resolver_match.url_name != "login" and request.resolver_match.url_name != "register" %}mt-5 pt-3{% endif %}">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+</body>
+</html>
